@@ -1,9 +1,10 @@
-import { useState } from "react";
+import _ from "lodash";
+import { useState, useEffect } from "react";
 import { Paper } from '@mui/material';
 import TextArea from "./TextArea/TextArea";
 import InputText from "./InputText/InputText";
-import _ from "lodash";
 import ProgressBar from "./ProgressBar/ProgressBar";
+import ResultModal from "../ResultModal/ResultModal";
 import './TrialsEngine.css';
 
 // states - full text, current word
@@ -14,7 +15,7 @@ const createEmptyBitmaps = (words) => {
     return bitmaps;
 }
 
-const fullText = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia corrupti provident, quaerat laborum nobis molestias debitis ea culpa praesentium, dicta illo quisquam dolorem, pariatur repellat nesciunt saepe modi obcaecati ipsum!";
+const fullText = `The water that falls on you from nowhere`//when you lie is perfectly ordinary' but perfectly pure. True fact. I tested it myself when the water started falling a few weeks ago. Everyone on Earth did. Everyone with any sense of lab safety anyway. Never assume any liquid is just water. When you say "I always document my experiments as I go along'" enough water falls to test' but not so much that you have to mop up the lab. Which lie doesn't matter.`;
 let words = fullText.split(" ").map((word) => word + " ");
 words[words.length - 1] = words[words.length - 1].trim();
 const individualContrib = Array(words.length);
@@ -22,6 +23,7 @@ words.forEach((word, i) => {
     individualContrib[i] = (word.length / fullText.length) * 100;
 })
 
+let startTime, endTime, showResults, speed, accuracy;
 
 const TrialsEngine = () => {
 
@@ -40,17 +42,40 @@ const TrialsEngine = () => {
             setCurrentWordIndex(currentWordIndex + 1);
         }
         else {
-            alert("Completed!");
+            endTime = new Date().getTime();
+            let totalWords = 0, totalChars = 0, correctChars = 0;
+            correctnessBitmaps.forEach((wordBitmap) => {
+                wordBitmap.forEach((charBitmap) => {
+                    if (charBitmap === 1)
+                        correctChars += 1;
+                    totalChars += 1;
+                });
+                totalWords += 1;
+            })
+
+            let timeTaken = ((endTime - startTime) / 1000) / 60; // in mimutes
+            speed = Math.round(totalWords / timeTaken, 0);
+            accuracy = Math.round((correctChars / totalChars) * 100, 2);
+            showResults = true;
         }
     }
 
-    return (
-        <Paper elevation={24} className="TrialsEngine" square>
-            <TextArea fullText={fullText} currentBitmaps={correctnessBitmaps} />
-            <ProgressBar progress={currentProgress} />
-            <InputText className="InputText" currentWord={words[currentWordIndex]} onCompletion={onCompletionHandler} />
-        </Paper>
+    useEffect(() => {
+        startTime = new Date().getTime();
+        showResults = false;
+        speed = 0;
+        accuracy = 0;
+    }, []);
 
+    return (
+        <>
+            <Paper elevation={24} className="TrialsEngine" square>
+                <TextArea fullText={fullText} currentBitmaps={correctnessBitmaps} />
+                <ProgressBar progress={currentProgress} />
+                <InputText className="InputText" currentWord={words[currentWordIndex]} onCompletion={onCompletionHandler} />
+                {showResults && <ResultModal accuracy={accuracy} speed={speed} />}
+            </Paper>
+        </>
     )
 }
 
