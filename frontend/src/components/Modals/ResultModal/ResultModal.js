@@ -49,7 +49,7 @@ BootstrapDialogTitle.propTypes = {
 };
 
 export default function ResultModal(props) {
-  console.log('rendered')
+  //console.log('rendered')
   const accuracy = props.accuracy;
   const speed = props.speed;
 

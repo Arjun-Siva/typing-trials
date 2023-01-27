@@ -4,18 +4,18 @@ import { Paper } from '@mui/material';
 import TextArea from "./TextArea/TextArea";
 import InputText from "./InputText/InputText";
 import ProgressBar from "./ProgressBar/ProgressBar";
-import ResultModal from "../ResultModal/ResultModal";
+import ResultModal from "../Modals/ResultModal/ResultModal";
 import './TrialsEngine.css';
 
 // states - full text, current word
-const createEmptyBitmaps = (words) => {
-    let bitmaps = [...Array(words.length)].map(
-        (l, i) => Array(words[i].length).fill(0)
+const createEmptyBitmaps = (wordsOfText) => {
+    let bitmaps = [...Array(wordsOfText.length)].map(
+        (l, i) => Array(wordsOfText[i].length).fill(0)
     );
     return bitmaps;
 }
 
-const fullText = `The water that falls on you from nowhere`//when you lie is perfectly ordinary' but perfectly pure. True fact. I tested it myself when the water started falling a few weeks ago. Everyone on Earth did. Everyone with any sense of lab safety anyway. Never assume any liquid is just water. When you say "I always document my experiments as I go along'" enough water falls to test' but not so much that you have to mop up the lab. Which lie doesn't matter.`;
+const fullText = `The water that falls on you from nowhere when you lie is perfectly ordinary but perfectly pure. True fact. I tested it myself when the water started falling a few weeks ago. Everyone on Earth did. Everyone with any sense of lab safety anyway. Never assume any liquid is just water. When you say "I always document my experiments as I go along'" enough water falls to test' but not so much that you have to mop up the lab. Which lie doesn't matter.`;
 let words = fullText.split(" ").map((word) => word + " ");
 words[words.length - 1] = words[words.length - 1].trim();
 const individualContrib = Array(words.length);
@@ -33,7 +33,7 @@ const TrialsEngine = () => {
 
     const onCompletionHandler = (resultBitmap) => {
         let updatedBitMaps = _.cloneDeep(correctnessBitmaps);
-        updatedBitMaps[currentWordIndex] = resultBitmap;
+        updatedBitMaps[currentWordIndex] = resultBitmap; // might be clone. no probs as of now
         setCorrectnessBitmaps(updatedBitMaps);
 
         setProgress(currentProgress + individualContrib[currentWordIndex]);
@@ -43,8 +43,9 @@ const TrialsEngine = () => {
         }
         else {
             endTime = new Date().getTime();
+
             let totalWords = 0, totalChars = 0, correctChars = 0;
-            correctnessBitmaps.forEach((wordBitmap) => {
+            updatedBitMaps.forEach((wordBitmap) => {
                 wordBitmap.forEach((charBitmap) => {
                     if (charBitmap === 1)
                         correctChars += 1;
@@ -68,14 +69,14 @@ const TrialsEngine = () => {
     }, []);
 
     return (
-        <>
+        <div className="EngineContainer">
             <Paper elevation={24} className="TrialsEngine" square>
                 <TextArea fullText={fullText} currentBitmaps={correctnessBitmaps} />
                 <ProgressBar progress={currentProgress} />
                 <InputText className="InputText" currentWord={words[currentWordIndex]} onCompletion={onCompletionHandler} />
-                {showResults && <ResultModal accuracy={accuracy} speed={speed} />}
             </Paper>
-        </>
+            {showResults && <ResultModal accuracy={accuracy} speed={speed} />}
+        </div>
     )
 }
 

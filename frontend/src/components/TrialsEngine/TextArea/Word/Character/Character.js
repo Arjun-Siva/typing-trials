@@ -8,6 +8,10 @@ const Character = (props) => {
 
     var currentStyle = {
         backgroundColor : color,
+        borderStyle : "dotted",
+        borderWidth : "0.5px",
+        borderColor: "#dee0e0",
+        whiteSpace: "pre-wrap"
     };
 
     return (
