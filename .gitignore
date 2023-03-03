@@ -18,3 +18,8 @@ frontend/.env.production.local
 frontend/npm-debug.log*
 frontend/yarn-debug.log*
 frontend/yarn-error.log*
+
+# Ignore in backend
+backend/notes.txt
+backend/.env
+backend/node_modules
