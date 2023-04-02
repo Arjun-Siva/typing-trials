@@ -9,7 +9,9 @@ const getParagraph = async (req, res) => {
         if(responseText.length < 20){
             throw new Error("API failure")
         }
+
         const data = await responseText.replace("\n\n", " ");
+        
         res.status(200).send(data);
     } catch (err) {
         const response = await Paragraph.aggregate([

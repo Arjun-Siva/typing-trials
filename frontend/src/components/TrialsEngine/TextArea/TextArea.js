@@ -11,7 +11,7 @@ const TextArea = (props) => {
         <div className="TextArea">
         {
             words.map((word, i) => {
-                return <Word bitmap={bitmaps[i]}>{word}</Word>
+                return <Word key={i} bitmap={bitmaps[i]}>{word}</Word>
             })
         }
         </div>

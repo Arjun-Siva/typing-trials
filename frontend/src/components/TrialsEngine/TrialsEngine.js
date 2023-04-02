@@ -15,17 +15,18 @@ const createEmptyBitmaps = (wordsOfText) => {
     return bitmaps;
 }
 
-const fullText = `The water that falls on you from nowhere when you lie is perfectly ordinary but perfectly pure. True fact. I tested it myself when the water started falling a few weeks ago. Everyone on Earth did. Everyone with any sense of lab safety anyway. Never assume any liquid is just water. When you say "I always document my experiments as I go along'" enough water falls to test' but not so much that you have to mop up the lab. Which lie doesn't matter.`;
-let words = fullText.split(" ").map((word) => word + " ");
-words[words.length - 1] = words[words.length - 1].trim();
-const individualContrib = Array(words.length);
-words.forEach((word, i) => {
-    individualContrib[i] = (word.length / fullText.length) * 100;
-})
-
 let startTime, endTime, showResults, speed, accuracy;
 
-const TrialsEngine = () => {
+const TrialsEngine = (props) => {
+
+    //const fullText = `The water that falls on you from nowhere when you lie is perfectly ordinary but perfectly pure. True fact. I tested it myself when the water started falling a few weeks ago. Everyone on Earth did. Everyone with any sense of lab safety anyway. Never assume any liquid is just water. When you say "I always document my experiments as I go along'" enough water falls to test' but not so much that you have to mop up the lab. Which lie doesn't matter.`;
+    const fullText = props.fullText;
+    let words = fullText.split(" ").map((word) => word + " ");
+    words[words.length - 1] = words[words.length - 1].trim();
+    const individualContrib = Array(words.length);
+    words.forEach((word, i) => {
+        individualContrib[i] = (word.length / fullText.length) * 100;
+    })
 
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
     const [correctnessBitmaps, setCorrectnessBitmaps] = useState(createEmptyBitmaps(words));
@@ -73,7 +74,7 @@ const TrialsEngine = () => {
             <Paper elevation={24} className="TrialsEngine" square>
                 <TextArea fullText={fullText} currentBitmaps={correctnessBitmaps} />
                 <ProgressBar progress={currentProgress} />
-                <InputText className="InputText" currentWord={words[currentWordIndex]} onCompletion={onCompletionHandler} />
+                {currentProgress < 100 && <InputText className="InputText" currentWord={words[currentWordIndex]} onCompletion={onCompletionHandler} />}
             </Paper>
             {showResults && <ResultModal accuracy={accuracy} speed={speed} />}
         </div>
