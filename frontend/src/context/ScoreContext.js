@@ -4,6 +4,10 @@ export const ScoresContext = createContext();
 
 export const scoresReducer= (state, action) => {// state - previous state
     switch(action.type){
+        case 'SET_SCORES':
+            return {
+                workouts: action.payload
+            }
         case 'CREATE_SCORE':
             return {
                 scores: [action.payload, ...state.scores]

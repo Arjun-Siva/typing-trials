@@ -47,6 +47,7 @@ const InputText = (props) => {
                 error={errorState}
                 inputProps={{
                     spellCheck: 'false',
+                    autoComplete: 'off',
                     style: { fontSize: 'x-large' }
                 }}
                 fullWidth={true}
