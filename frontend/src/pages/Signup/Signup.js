@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useSignup } from "../../hooks/useSignup";
+import './Signup.css';
 
 const theme = createTheme();
 
@@ -87,7 +88,7 @@ export default function SignUp() {
             >
               Sign Up
             </Button>
-            {error && <div className="error">{error}</div>}
+            {error && <Typography className="signUpError" variant="subtitle1">{error}</Typography>}
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link to="/login">

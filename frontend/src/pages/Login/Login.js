@@ -11,6 +11,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useLogin} from '../../hooks/useLogin';
+import './Login.css';
+// import CustomSnackbar from '../../components/Snackbar/CustomSnackbar';
 
 const theme = createTheme();
 
@@ -63,10 +65,7 @@ export default function Login() {
               id="password"
               autoComplete="current-password"
             />
-            {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
+
             <Button
               type="submit"
               fullWidth
@@ -76,13 +75,9 @@ export default function Login() {
             >
               Sign In
             </Button>
-            {error && <div className="error">{error}</div>}{/* needs styling*/ }
+            {/* <CustomSnackbar type="error" open={true} message={error}/> */}
+            {error && <Typography className="loginError" variant="subtitle1">{error}</Typography>}
             <Grid container justifyContent="flex-end">
-              {/* <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid> */}
               <Grid item>
                 <Link to="/signup">
                   {"New to the website? Sign Up"}

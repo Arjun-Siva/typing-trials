@@ -10,8 +10,8 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
-import Confetti from 'react-confetti';
-import CustomSnackbar from "../../Snackbar/CustomSnackbar";
+// import Confetti from 'react-confetti';
+// import CustomSnackbar from "../../Snackbar/CustomSnackbar";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -56,9 +56,9 @@ export default function ResultModal(props) {
   const speed = props.speed;
 
   const [open, setOpen] = useState(true);
-  const [openSnackBar, setOpenSnackBar] = useState(false);
-  const [snackBarMessage, setSnackbarMessage] = useState('');
-  const [messageType, setMessageType] = useState('success');
+  // const [openSnackBar, setOpenSnackBar] = useState(false);
+  // const [snackBarMessage, setSnackbarMessage] = useState('');
+  // const [messageType, setMessageType] = useState('success');
 
   const { user } = useAuthContext();
 
@@ -79,22 +79,23 @@ export default function ResultModal(props) {
     })
     
     if (!response.ok) {
-      setSnackbarMessage('Unable to save score');
-      setMessageType('error');
-      setOpenSnackBar(true);
+      // setSnackbarMessage('Unable to save score');
+      // setMessageType('error');
+      // setOpenSnackBar(true);
+      alert('Unable to save')
     }
-    if (response.ok) {
-      setSnackbarMessage('Score saved successfully');
-      setMessageType('success');
-      setOpenSnackBar(true);
-    }
+    // if (response.ok) {
+    //   setSnackbarMessage('Score saved successfully');
+    //   setMessageType('success');
+    //   setOpenSnackBar(true);
+    // }
     setOpen(false);
   }
 
   return (
     <div>
-      <Confetti />
-      <CustomSnackbar message={snackBarMessage} open={openSnackBar} type={messageType}/>
+      {/* <Confetti /> */}
+      {/* <CustomSnackbar message={snackBarMessage} open={openSnackBar} type={messageType}/> */}
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"

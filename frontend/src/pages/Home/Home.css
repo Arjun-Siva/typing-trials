@@ -28,3 +28,9 @@ img {
     padding-bottom: 5em;
     margin-bottom: 10em;
 }
+
+.loading {
+    position: absolute;
+    left:50%;
+    transform: translate(-50%, -50%);
+}

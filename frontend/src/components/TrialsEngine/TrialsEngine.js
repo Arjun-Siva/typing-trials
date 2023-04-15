@@ -42,6 +42,10 @@ const TrialsEngine = (props) => {
         startGame(true);
     }
 
+    // const stopGameHandler = () => {
+    //     startGame(false);
+    // }
+
     const onCompletionHandler = (resultBitmap) => {
         let updatedBitMaps = _.cloneDeep(correctnessBitmaps);
         updatedBitMaps[currentWordIndex] = resultBitmap; // might be clone. no probs as of now
@@ -69,6 +73,10 @@ const TrialsEngine = (props) => {
             speed = Math.round(totalWords / timeTaken, 0);
             accuracy = Math.round((correctChars / totalChars) * 100, 2);
             showResults = true;
+
+            props.setPrevResults(
+                {speed, accuracy}
+            )            
         }
     }
 
@@ -98,9 +106,9 @@ const TrialsEngine = (props) => {
                 <Button variant="outlined" color="success" onClick={startGameHandler} disabled={started}>
                     Start
                 </Button>
-                <Button variant="outlined" color="error" disabled={showResults}>
+                {/* <Button variant="outlined" color="error" disabled={showResults} onClick={stopGameHandler}>
                     Stop
-                </Button>
+                </Button> */}
                 <Button variant="outlined" color="secondary" onClick={restartHandler}>
                     Restart
                 </Button>
@@ -108,7 +116,7 @@ const TrialsEngine = (props) => {
             <Paper elevation={16} className="TrialsEngine" square>
                 <TextArea fullText={fullText} currentBitmaps={correctnessBitmaps} blur={!started} />
                 <ProgressBar progress={currentProgress} />
-                {currentProgress < 100 && <InputText className="InputText" currentWord={allWords[currentWordIndex]} onCompletion={onCompletionHandler} />}
+                {(currentProgress < 100 && started) && <InputText className="InputText" currentWord={allWords[currentWordIndex]} onCompletion={onCompletionHandler} />}
             </Paper>
             {showResults && <ResultModal accuracy={accuracy} speed={speed} />}
         </div>
