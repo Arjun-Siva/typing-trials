@@ -12,13 +12,20 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { Link } from 'react-router-dom';
+import { useLogout } from '../../hooks/useLogout';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
-const pages = ['Play Now', 'Compete', 'Contribute'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = ['Login', 'Sign up'];
+const links = ['/login', '/signup'];
 
 function Navbar() {
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const { logout } = useLogout();
+  const { user } = useAuthContext();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -38,7 +45,7 @@ function Navbar() {
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
+        <Toolbar disableGutters sx={{ display: "flex", justifyContent: "space-between" }}>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
@@ -55,9 +62,10 @@ function Navbar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            Typing Trials
           </Typography>
 
+          {!user && (<>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -84,51 +92,41 @@ function Navbar() {
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: 'block', md: 'none' },
+                display: { xs: 'flex', md: 'none' },
               }}
             >
-              {pages.map((page) => (
+              {pages.map((page, i) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                  <Link to={links[i]} style={{ textDecoration: 'none' }}>
+                    <Typography textAlign="center">{page}</Typography>
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            LOGO
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              {pages.map((page, i) => (
+                <Link to={links[i]} style={{ textDecoration: 'none' }}>
+                  <Button
+                    key={page}
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'white', display: 'block', mr: 2 }}
+                  >
+                    {page}
+                  </Button>
+                </Link>
+              ))}
+            </Box>
+          </Box>
+          </>
+          )}
+
+          {user && (<Box display="flex-end" flexDirection="column" sx={{ flexGrow: 0}}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt={user.email} src="/static/images/avatar/1.jpg" />
               </IconButton>
             </Tooltip>
             <Menu
@@ -147,16 +145,20 @@ function Navbar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem key="profile" onClick={handleCloseUserMenu}>
+                <Link to="/profile" style={{ textDecoration: 'none' }}>
+                  <Typography textAlign="center">Profile</Typography>
+                </Link>
+              </MenuItem>
+              <MenuItem key="logout" onClick={logout}>
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
             </Menu>
-          </Box>
+          </Box>)}
         </Toolbar>
+
       </Container>
-    </AppBar>
+    </AppBar >
   );
 }
 export default Navbar;

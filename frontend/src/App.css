@@ -1,0 +1,5 @@
+.pages {
+    display: flex;
+    flex-direction: column;
+    min-height: 90vh;
+}

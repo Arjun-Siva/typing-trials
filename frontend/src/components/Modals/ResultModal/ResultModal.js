@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuthContext } from '../../../hooks/useAuthContext';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
@@ -9,6 +10,8 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
+// import Confetti from 'react-confetti';
+// import CustomSnackbar from "../../Snackbar/CustomSnackbar";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -49,18 +52,50 @@ BootstrapDialogTitle.propTypes = {
 };
 
 export default function ResultModal(props) {
-  //console.log('rendered')
   const accuracy = props.accuracy;
   const speed = props.speed;
 
   const [open, setOpen] = useState(true);
+  // const [openSnackBar, setOpenSnackBar] = useState(false);
+  // const [snackBarMessage, setSnackbarMessage] = useState('');
+  // const [messageType, setMessageType] = useState('success');
+
+  const { user } = useAuthContext();
 
   const handleClose = () => {
     setOpen(false);
   };
 
+  const handleSave = async () => {
+    const score = { speed, accuracy };
+
+    const response = await fetch('/api/scores', {
+      method: 'POST',
+      body: JSON.stringify(score),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`
+      }
+    })
+    
+    if (!response.ok) {
+      // setSnackbarMessage('Unable to save score');
+      // setMessageType('error');
+      // setOpenSnackBar(true);
+      alert('Unable to save')
+    }
+    // if (response.ok) {
+    //   setSnackbarMessage('Score saved successfully');
+    //   setMessageType('success');
+    //   setOpenSnackBar(true);
+    // }
+    setOpen(false);
+  }
+
   return (
     <div>
+      {/* <Confetti /> */}
+      {/* <CustomSnackbar message={snackBarMessage} open={openSnackBar} type={messageType}/> */}
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -78,7 +113,7 @@ export default function ResultModal(props) {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
+          <Button autoFocus onClick={handleSave} disabled={!user}>
             Save results
           </Button>
         </DialogActions>

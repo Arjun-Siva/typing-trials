@@ -1,6 +1,8 @@
 import _ from "lodash";
 import { useState, useEffect } from "react";
 import { Paper } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 import TextArea from "./TextArea/TextArea";
 import InputText from "./InputText/InputText";
 import ProgressBar from "./ProgressBar/ProgressBar";
@@ -15,21 +17,34 @@ const createEmptyBitmaps = (wordsOfText) => {
     return bitmaps;
 }
 
-const fullText = `The water that falls on you from nowhere when you lie is perfectly ordinary but perfectly pure. True fact. I tested it myself when the water started falling a few weeks ago. Everyone on Earth did. Everyone with any sense of lab safety anyway. Never assume any liquid is just water. When you say "I always document my experiments as I go along'" enough water falls to test' but not so much that you have to mop up the lab. Which lie doesn't matter.`;
-let words = fullText.split(" ").map((word) => word + " ");
-words[words.length - 1] = words[words.length - 1].trim();
-const individualContrib = Array(words.length);
-words.forEach((word, i) => {
-    individualContrib[i] = (word.length / fullText.length) * 100;
-})
-
 let startTime, endTime, showResults, speed, accuracy;
 
-const TrialsEngine = () => {
+const TrialsEngine = (props) => {
 
+    const fullText = props.fullText;
+    let words = fullText.split(" ").map((word) => word + " ");
+    words[words.length - 1] = words[words.length - 1].trim();
+    const contribs = Array(words.length);
+    words.forEach((word, i) => {
+        contribs[i] = (word.length / fullText.length) * 100;
+    })
+
+    const [allWords, setWords] = useState(_.clone(words));
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
     const [correctnessBitmaps, setCorrectnessBitmaps] = useState(createEmptyBitmaps(words));
     const [currentProgress, setProgress] = useState(0);
+    const [individualContrib, setIndividualContrib] = useState(_.clone(contribs));
+
+    const [started, startGame] = useState(false);
+
+    const startGameHandler = () => {
+        startTime = new Date().getTime();
+        startGame(true);
+    }
+
+    // const stopGameHandler = () => {
+    //     startGame(false);
+    // }
 
     const onCompletionHandler = (resultBitmap) => {
         let updatedBitMaps = _.cloneDeep(correctnessBitmaps);
@@ -38,7 +53,7 @@ const TrialsEngine = () => {
 
         setProgress(currentProgress + individualContrib[currentWordIndex]);
 
-        if (currentWordIndex !== words.length - 1) {
+        if (currentWordIndex !== allWords.length - 1) {
             setCurrentWordIndex(currentWordIndex + 1);
         }
         else {
@@ -58,22 +73,50 @@ const TrialsEngine = () => {
             speed = Math.round(totalWords / timeTaken, 0);
             accuracy = Math.round((correctChars / totalChars) * 100, 2);
             showResults = true;
+
+            props.setPrevResults(
+                {speed, accuracy}
+            )            
         }
     }
 
     useEffect(() => {
-        startTime = new Date().getTime();
         showResults = false;
         speed = 0;
         accuracy = 0;
-    }, []);
+        let words = fullText.split(" ").map((word) => word + " ");
+        words[words.length - 1] = words[words.length - 1].trim();
+        const contribs = Array(words.length);
+        words.forEach((word, i) => {
+            contribs[i] = (word.length / fullText.length) * 100;
+        })
+
+        setWords(_.clone(words));
+        setCorrectnessBitmaps(createEmptyBitmaps(words));
+        setIndividualContrib(_.clone(contribs));
+    }, [fullText]);
+
+    const restartHandler = () => {
+        props.reloadText();
+    };
 
     return (
         <div className="EngineContainer">
-            <Paper elevation={24} className="TrialsEngine" square>
-                <TextArea fullText={fullText} currentBitmaps={correctnessBitmaps} />
+            <Stack direction="row" spacing={5} className="Stack">
+                <Button variant="outlined" color="success" onClick={startGameHandler} disabled={started}>
+                    Start
+                </Button>
+                {/* <Button variant="outlined" color="error" disabled={showResults} onClick={stopGameHandler}>
+                    Stop
+                </Button> */}
+                <Button variant="outlined" color="secondary" onClick={restartHandler}>
+                    Restart
+                </Button>
+            </Stack>
+            <Paper elevation={16} className="TrialsEngine" square>
+                <TextArea fullText={fullText} currentBitmaps={correctnessBitmaps} blur={!started} />
                 <ProgressBar progress={currentProgress} />
-                <InputText className="InputText" currentWord={words[currentWordIndex]} onCompletion={onCompletionHandler} />
+                {(currentProgress < 100 && started) && <InputText className="InputText" currentWord={allWords[currentWordIndex]} onCompletion={onCompletionHandler} />}
             </Paper>
             {showResults && <ResultModal accuracy={accuracy} speed={speed} />}
         </div>

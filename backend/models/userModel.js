@@ -32,7 +32,12 @@ const isStrongPassword = (pass) => {
 
 // static signup method
 userSchema.statics.signup = async function(email, username, password) {
+    const exists = await this.findOne( {email} )
 
+    if (exists){
+        throw Error('Email already in use');
+    }
+    
     if(!email || !password || !username){
         throw Error('All fields must be filled')
     }
@@ -41,13 +46,6 @@ userSchema.statics.signup = async function(email, username, password) {
     }
     if(!isStrongPassword(password)) {
         throw Error('Password not strong enough')
-    }
-
-
-    const exists = await this.findOne( {email} )
-
-    if (exists){
-        throw Error('Email already in use');
     }
 
     const salt = await bcrypt.genSalt(10);

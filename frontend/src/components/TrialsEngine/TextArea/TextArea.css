@@ -1,3 +1,11 @@
 .TextArea {
     font-size:x-large;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    z-index:0;
 }
+
+.blur-text {
+    filter: blur(4px);
+  }
+  

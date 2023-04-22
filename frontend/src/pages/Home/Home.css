@@ -1,0 +1,45 @@
+.landing {
+    height: 30em;
+    max-width: 100%;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}
+
+img {
+    width: 50%;
+    height:auto;
+    float: right;
+    border-radius: 15%;
+}
+
+.title {
+    width: 50%;
+    height:100%;
+    float: left;
+    text-align: center;
+}
+
+.title h1{
+    margin-top: 6em;
+}
+
+.engineContainer {
+    padding-top: 15em;
+    padding-bottom: 5em;
+    margin-bottom: 10em;
+}
+
+.loading {
+    position: absolute;
+    left:50%;
+    transform: translate(-50%, -50%);
+}
+
+.typography {
+    text-align: center;
+    padding-left: 8em;
+}
+
+#greenText{
+    color: #4caf50;
+}
