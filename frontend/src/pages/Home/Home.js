@@ -3,6 +3,7 @@ import TrialsEngine from "../../components/TrialsEngine/TrialsEngine";
 import TypeWriterImage from "../../images/typewriter.jpg";
 import './Home.css';
 import CircularProgress from '@mui/material/CircularProgress';
+import Typography from '@mui/material/Typography';
 
 const Home = () => {
     const [fullText, setFullText] = useState(null);
@@ -12,11 +13,11 @@ const Home = () => {
     const newText = () => {
         setLoadingContent(true);
         fetch('/api/paragraph')
-        .then(response => response.text())
-        .then(data => {
-            setFullText(data);
-            setLoadingContent(false);
-        })
+            .then(response => response.text())
+            .then(data => {
+                setFullText(data);
+                setLoadingContent(false);
+            })
     };
 
     useEffect(newText, []);
@@ -31,17 +32,32 @@ const Home = () => {
             </div>
             <div className="engineContainer">
                 {prevResults && (
-                    <div>
-                        Previous trial results - Speed: {prevResults.speed} WPM, Accuracy: {prevResults.accuracy}%
-                    </div>
-                    )
+                    <Typography
+                        variant="h6"
+                        noWrap
+                        component="a"
+                        href="/"
+                        className="typography"
+                        sx={{
+                            mr: 2,
+                            display: { xs: 'none', md: 'flex' },
+                            fontFamily: 'monospace',
+                            fontWeight: 700,
+                            color: 'inherit',
+                            textDecoration: 'none',
+                        }}
+                    >
+                        Previous trial results - Speed: <span id="greenText">{prevResults.speed} WPM</span>,
+                        Accuracy: <span id="greenText">{prevResults.accuracy}%</span>
+                    </Typography>
+                )
                 }
-                {loadingContent ? <CircularProgress className="loading"/> : 
-                <TrialsEngine 
-                    fullText={fullText} 
-                    reloadText={newText}
-                    setPrevResults={setPrevResults}
-                />}
+                {loadingContent ? <CircularProgress className="loading" /> :
+                    <TrialsEngine
+                        fullText={fullText}
+                        reloadText={newText}
+                        setPrevResults={setPrevResults}
+                    />}
             </div>
         </div>
     )

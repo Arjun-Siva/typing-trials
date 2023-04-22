@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
+import "./App.css";
 // pages and components
 import Home from "./pages/Home/Home";
 import Navbar from "./components/Navbar/Navbar";
