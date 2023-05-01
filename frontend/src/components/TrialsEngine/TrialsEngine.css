@@ -1,0 +1,17 @@
+.TrialsEngine {
+  margin: auto;
+  /* width: 80%; */
+  border: thick #32a1ce;
+  padding: 1%;
+}
+
+.EngineContainer{
+  width: 80%;
+  background-color: rgb(255, 255, 255);
+  margin: auto;
+  z-index: 0;
+}
+
+.Stack {
+  padding-bottom: 2%;
+}
