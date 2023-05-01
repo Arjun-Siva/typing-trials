@@ -4,6 +4,7 @@ import TypeWriterImage from "../../images/typewriter.jpg";
 import './Home.css';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
+import ScrollDownButton from "../../components/ScrollDownButton/ScrollDownButton";
 
 const Home = () => {
     const [fullText, setFullText] = useState(null);
@@ -28,6 +29,7 @@ const Home = () => {
                 <div className="title">
                     <h1>{'Typing Trials'}</h1>
                 </div>
+                <ScrollDownButton/>
                 <img src={TypeWriterImage} alt="typewriter" />
             </div>
             <div className="engineContainer">
