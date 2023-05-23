@@ -5,7 +5,7 @@
     flex-direction: column;
 }
 
-img {
+.landing img {
     width: 50%;
     height:auto;
     float: right;

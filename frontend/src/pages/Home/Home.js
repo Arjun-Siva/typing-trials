@@ -38,7 +38,6 @@ const Home = () => {
                         variant="h6"
                         noWrap
                         component="a"
-                        href="/"
                         className="typography"
                         sx={{
                             mr: 2,

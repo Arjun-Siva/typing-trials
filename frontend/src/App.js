@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import Profile from "./pages/Profile/Profile";
+import Arena from "./pages/Arena/Arena";
 import Footer from "./components/Footer/Footer";
 
 function App() {
@@ -24,6 +25,10 @@ function App() {
           <Route 
             path="/profile"
             element={user ? <Profile/> : <Navigate to="/login"/>}>
+          </Route>
+          <Route
+           path="/arena"
+           element={<Arena/>}>
           </Route>
           <Route
             path="/login"

@@ -16,8 +16,8 @@ import { Link } from 'react-router-dom';
 import { useLogout } from '../../hooks/useLogout';
 import { useAuthContext } from '../../hooks/useAuthContext';
 
-const pages = ['Login', 'Sign up'];
-const links = ['/login', '/signup'];
+const pages = ['Arena','Login', 'Sign up'];
+const links = ['/arena','/login', '/signup'];
 
 function Navbar() {
 

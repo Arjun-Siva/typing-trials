@@ -1,0 +1,13 @@
+.arenaContainer img {
+    width: 40%;
+    height:80%;
+    float: right;
+    border-radius: 15%;
+}
+
+.arenaContainer{
+    height: 30em;
+    max-width: 100%;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}
