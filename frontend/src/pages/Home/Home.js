@@ -58,6 +58,7 @@ const Home = () => {
                         fullText={fullText}
                         reloadText={newText}
                         setPrevResults={setPrevResults}
+                        multimode={false}
                     />}
             </div>
         </div>

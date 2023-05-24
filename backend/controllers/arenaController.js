@@ -1,7 +1,6 @@
 const Arena = require("../models/arenaModel");
 const nanoid = require("nanoid-esm");
 
-//Return arena details
 const joinArena = async (req, res) => {
     try {
         const { nickname, arena_id } = req.body;
@@ -19,7 +18,7 @@ const joinArena = async (req, res) => {
         };
 
         const temp_id = nanoid(10);
-        res.status(200).json({ nickname, arena, temp_id });
+        res.status(200).json({ nickname, temp_id, ...arena });
 
     } catch (error) {
         console.log(error);
@@ -46,7 +45,7 @@ const createArena = async (req, res) => {
             "owner_id": valid_arena['owner_id'], 
             "owner_name": valid_arena['owner_name']
         };
-        res.status(200).json(arena);
+        res.status(200).json({ nickname, temp_id, ...arena });
 
     } catch (err) {
         res.status(400).json({ error: err.message })
