@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { useArenaContext } from "../../hooks/useArenaContext";
 import ArenaImage from "../../images/arena.jpg";
 import Typography from '@mui/material/Typography';
+import PlayerTable from "../../components/PlayerTable/PlayerTable";
 import "./Arena.css";
 import io from 'socket.io-client';
 
@@ -16,8 +17,10 @@ const Arena = () => {
   const { arena } = useArenaContext();
   const [started, startGame] = useState(false);
   const [progressList, setProgressList] = useState([]);
+  const [results, setResults] = useState([]);
   const [fullText, setFullText] = useState('');
   const [messages, setMessages] = useState([]);
+  const [ended, endGame] = useState(false);
 
   socket.on("game started", (fullText) => {
     startGame(true);
@@ -29,15 +32,27 @@ const Arena = () => {
   })
 
   socket.on("arena progress update", (update) => {
-    console.log("arena progress update", update);
+    //console.log("arena progress update", update);
     const oldList = progressList.filter(item => item.temp_id !== update.temp_id);
     setProgressList([update, ...oldList]);
   })
 
+  socket.on("arena result update", (update) => {
+    setResults([update, ...results]);
+  })
 
-  const startGameHandler = async () => {
-    const response = await fetch('/api/paragraph');
-    const fullText = await response.text();
+  socket.on("game stop", () => {
+    setProgressList([]);
+    setResults([]);
+    setFullText('');
+    endGame(false);
+    startGame(false);
+  });
+
+  const startGameHandler = /*async*/ () => {
+    // const response = await fetch('/api/paragraph');
+    // const fullText = await response.text();
+    const fullText = "arjun siva of the world have riches beyond prince Caspian. Wowza!";
     socket.emit("start game", {
       "arena_id": arena.arena_id,
       "fullText": fullText
@@ -49,8 +64,26 @@ const Arena = () => {
     }
   }
 
+  const endGameHandler = ({speed, accuracy}) => {
+    const update = {
+      "arena_id": arena.arena_id,
+      "nickname": arena.nickname,
+      "temp_id": arena.temp_id,
+      "speed": speed,
+      "accuracy": accuracy
+    }
+    socket.emit("individual finish", update);
+    setResults([...results, update])
+    endGame(true);
+  }
+
   const restartHandler = () => {
-    //reloadText();
+    socket.emit("game restart", arena.arena_id);
+    setProgressList([]);
+    setResults([]);
+    setFullText('');
+    endGame(false);
+    startGame(false);
   };
 
 
@@ -130,8 +163,15 @@ const Arena = () => {
               setPrevResults={null}
               multimode={true}
               progressChangeHandler={progressChangeHandler}
+              endGameHandler={endGameHandler}
             />
           </div>}
+
+          {ended
+          && arena
+          && <PlayerTable players={results}/>
+
+          }
 
       </header>
     </div>

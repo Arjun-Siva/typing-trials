@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
-//import { useScoreContext } from "../../hooks/useScoreContext";
 import { DataGrid } from '@mui/x-data-grid';
 import formatDistanceToNow from "date-fns/formatDistanceToNow"
 
@@ -21,11 +20,10 @@ const columns = [
 const Profile = () => {
     const [scores, setScores] = useState(null);
 
-    //const { workouts, dispatch } = useScoreContext();
     const { user } = useAuthContext();
 
     useEffect(() => {
-        const fetchWorkouts = async () => {
+        const fetchScores = async () => {
             const response = await fetch('/api/scores', {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
@@ -34,13 +32,10 @@ const Profile = () => {
             const json = await response.json()
             setScores(json);
             console.log(json);
-            // if (response.ok) {
-            //     dispatch({ type: 'SET_WORKOUTS', payload: json });
-            // }
         }
 
         if (user) {
-            fetchWorkouts();
+            fetchScores();
         }
 
     }, [/*dispatch,*/ user]);

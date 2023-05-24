@@ -78,14 +78,18 @@ const TrialsEngine = (props) => {
                 totalWords += 1;
             })
 
-            let timeTaken = ((endTime - startTime) / 1000) / 60; // in mimutes
+            let timeTaken = ((endTime - startTime) / 1000) / 60; // in minutes
             speed = Math.round(totalWords / timeTaken, 0);
             accuracy = Math.round((correctChars / totalChars) * 100, 2);
             showResults = true;
 
-            props.setPrevResults(
-                { speed, accuracy }
-            )
+            if (multimode) {
+                props.endGameHandler({ speed, accuracy });
+            }
+
+            if (!multimode) {
+                props.setPrevResults({ speed, accuracy });
+            }
         }
     }
 
@@ -103,7 +107,11 @@ const TrialsEngine = (props) => {
         setWords(_.clone(words));
         setCorrectnessBitmaps(createEmptyBitmaps(words));
         setIndividualContrib(_.clone(contribs));
-    }, [fullText]);
+
+        if (multimode) {
+            startTime = new Date().getTime();
+        }
+    }, [fullText, multimode]);
 
     const restartHandler = () => {
         props.reloadText();

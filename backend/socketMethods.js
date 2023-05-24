@@ -28,9 +28,14 @@ const ArenaSockets = (io) => {
                 {
                     "nickname": userData.nickname,
                     "temp_id": userData.temp_id,
-                    "time_taken": userData.time_taken,
+                    "speed": userData.speed,
                     "accuracy": userData.accuracy
                 })
+        })
+
+        socket.on("game restart", (arena_id) => {
+            console.log("game restart received", arena_id);
+            socket.to(arena_id).emit("game stop");
         })
 
         socket.on("disconnect", () => {
