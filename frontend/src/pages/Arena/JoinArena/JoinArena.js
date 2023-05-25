@@ -6,12 +6,12 @@ import TextField from '@mui/material/TextField';
 import { Link } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import StadiumRoundedIcon from '@mui/icons-material/StadiumRounded';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useJoinArena } from '../../../hooks/useJoinArena';
-// import CustomSnackbar from '../../components/Snackbar/CustomSnackbar';
+import './JoinArena.css'
 
 const theme = createTheme();
 
@@ -38,7 +38,7 @@ export default function Login() {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
+            <StadiumRoundedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Join Arena
@@ -49,7 +49,7 @@ export default function Login() {
               required
               fullWidth
               id="nickname"
-              label="Nick name"
+              label="Nickname"
               name="nickname"
               autoFocus
             />
@@ -72,7 +72,6 @@ export default function Login() {
             >
               Enter Arena
             </Button>
-            {/* <CustomSnackbar type="error" open={true} message={error}/> */}
             {error && <Typography className="loginError" variant="subtitle1">{error}</Typography>}
             <Grid container justifyContent="flex-end">
               <Grid item>

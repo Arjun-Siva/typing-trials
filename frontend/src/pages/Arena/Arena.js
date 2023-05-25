@@ -28,7 +28,7 @@ const Arena = () => {
   });
 
   socket.on("general message", (msg) => {
-    setMessages([...messages,msg]);
+    setMessages([...messages, msg]);
   })
 
   socket.on("arena progress update", (update) => {
@@ -49,10 +49,9 @@ const Arena = () => {
     startGame(false);
   });
 
-  const startGameHandler = /*async*/ () => {
-    // const response = await fetch('/api/paragraph');
-    // const fullText = await response.text();
-    const fullText = "arjun siva of the world have riches beyond prince Caspian. Wowza!";
+  const startGameHandler = async () => {
+    const response = await fetch('/api/paragraph');
+    const fullText = await response.text();
     socket.emit("start game", {
       "arena_id": arena.arena_id,
       "fullText": fullText
@@ -64,7 +63,7 @@ const Arena = () => {
     }
   }
 
-  const endGameHandler = ({speed, accuracy}) => {
+  const endGameHandler = ({ speed, accuracy }) => {
     const update = {
       "arena_id": arena.arena_id,
       "nickname": arena.nickname,
@@ -111,68 +110,71 @@ const Arena = () => {
       <header className="App-header">
 
         {!arena &&
-          (<>
-            <Link to="/arena/join" style={{ textDecoration: 'none' }}>
-              <Typography textAlign="center">Join an arena</Typography>
-            </Link>
-            <Link to="/arena/create" style={{ textDecoration: 'none' }}>
-              <Typography textAlign="center">Create an arena</Typography>
-            </Link>
-          </>)
+          (<div className="arenaContainer">
+            <img src={ArenaImage} alt="arena-pic" />
+            <div className="arenaText">
+              <p>Online Multiplayer tournament. Compete with your friends in an Arena</p>
+              <div className="arenaTitle">
+                <Link to="/arena/join" style={{ textDecoration: 'none' }}>
+                  <Typography textAlign="center" variant="h2">Join an arena</Typography>
+                </Link>
+                <Link to="/arena/create" style={{ textDecoration: 'none' }}>
+                  <Typography textAlign="center" variant="h2">Create an arena</Typography>
+                </Link>
+              </div>
+            </div>
+          </div>)
         }
+        <div className="gameContainer">
+          {arena &&
+            (<div>
+              <p>My Nickname: <span className="arenaDeets">{arena.nickname}</span></p>
+              <p>Arena id: <span className="arenaDeets">{arena.arena_id}</span> (Share this with your friends to let them join)</p>
+              <p>Arena owner: <span className="arenaDeets">{arena.owner_name}</span></p>
+            </div>
+            )
+          }
 
-        {arena &&
-          (<div>
-            <p>nickname: {arena.nickname}</p>
-            <p>arena id:{arena.arena_id},</p>
-            <p>arena owner:{arena.owner_name},</p>
-            <p>arena owner_id:{arena.owner_id},</p>
-            <p>my id:{arena.temp_id}</p>
-          </div>
-          )
-        }
+          {arena
+            && arena.owner_id === arena.temp_id
+            && <Stack direction="row" spacing={5} className="Stack">
+              <Button variant="outlined" color="success" onClick={startGameHandler} disabled={started}>
+                Start game
+              </Button>
+              <Button variant="outlined" color="secondary" onClick={restartHandler}>
+                Restart
+              </Button>
+            </Stack>
+          }
 
-        {arena
-          && arena.owner_id === arena.temp_id
-          && <Stack direction="row" spacing={5} className="Stack">
-            <Button variant="outlined" color="success" onClick={startGameHandler} disabled={started}>
-              Start game
-            </Button>
-            <Button variant="outlined" color="secondary" onClick={restartHandler}>
-              Restart
-            </Button>
-          </Stack>
-        }
-
-        {arena
-          && !started
-          && <>
-          <p>Waiting for arena owner to start the game ...</p>
-          {messages.map(message=>{return <p>{message}</p>})}
-          </>
-
-        }
-
-        {started
-          && arena
-          && <div>
-            <ProgressMulti progressList = {progressList}/>
-            <TrialsEngine
-              fullText={fullText}
-              reloadText={null}
-              setPrevResults={null}
-              multimode={true}
-              progressChangeHandler={progressChangeHandler}
-              endGameHandler={endGameHandler}
-            />
-          </div>}
-
-          {ended
-          && arena
-          && <PlayerTable players={results}/>
+          {arena
+            && !started
+            && <>
+              <p>Waiting for Arena owner to start the game ...</p>
+              {messages.map((message, i) => { return <p key={i} className="messages">{message}</p> })}
+            </>
 
           }
 
+          {started
+            && arena
+            && <div className="arenaTrials">
+              <ProgressMulti progressList={progressList} />
+              <TrialsEngine
+                fullText={fullText}
+                reloadText={null}
+                setPrevResults={null}
+                multimode={true}
+                progressChangeHandler={progressChangeHandler}
+                endGameHandler={endGameHandler}
+              />
+            </div>}
+
+          {ended
+            && arena
+            && <div className="playerTable"><PlayerTable players={results} /></div>
+          }
+        </div>
       </header>
     </div>
   );

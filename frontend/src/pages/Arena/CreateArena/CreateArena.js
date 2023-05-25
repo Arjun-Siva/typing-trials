@@ -6,7 +6,7 @@ import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import StadiumRoundedIcon from '@mui/icons-material/StadiumRounded';
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -38,14 +38,12 @@ export default function CreateArena() {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
+            <StadiumRoundedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Create new Arena
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
                   name="nickname"
@@ -55,8 +53,6 @@ export default function CreateArena() {
                   label="Nickname"
                   autoFocus
                 />
-              </Grid>
-            </Grid>
             <Button
               type="submit"
               fullWidth
@@ -64,7 +60,7 @@ export default function CreateArena() {
               sx={{ mt: 3, mb: 2 }}
               disabled={isLoading}
             >
-              Create
+              Create Arena
             </Button>
             {error && <Typography className="signUpError" variant="subtitle1">{error}</Typography>}
             <Grid container justifyContent="flex-end">

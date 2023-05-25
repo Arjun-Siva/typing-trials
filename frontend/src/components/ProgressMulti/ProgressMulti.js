@@ -6,11 +6,11 @@ const ProgressMulti = (props) => {
 
     return (
         <div>
-            progresses
+            <b>Progresses:</b>
             <ul>
                 {progressList.map(item => {
                     return <li key={item.temp_id}>
-                        {item.nickname}:<ProgressBar color='red' progress={item.progress} />
+                        {item.nickname}:<ProgressBar progress={item.progress} />
                     </li>
                 })}
             </ul>

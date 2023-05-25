@@ -68,6 +68,8 @@ const TrialsEngine = (props) => {
         else {
             endTime = new Date().getTime();
 
+            setProgress(100); // to round it up
+
             let totalWords = 0, totalChars = 0, correctChars = 0;
             updatedBitMaps.forEach((wordBitmap) => {
                 wordBitmap.forEach((charBitmap) => {
@@ -129,7 +131,7 @@ const TrialsEngine = (props) => {
             </Stack>}
             <Paper elevation={16} className="TrialsEngine" square>
                 <TextArea fullText={fullText} currentBitmaps={correctnessBitmaps} blur={!started} />
-                <ProgressBar progress={currentProgress} />
+                <ProgressBar progress={currentProgress}/>
                 {(currentProgress < 100 && started) && <InputText className="InputText" currentWord={allWords[currentWordIndex]} onCompletion={onCompletionHandler} />}
             </Paper>
             {showResults && <ResultModal accuracy={accuracy} speed={speed} />}

@@ -4,7 +4,6 @@ const nanoid = require("nanoid-esm");
 const joinArena = async (req, res) => {
     try {
         const { nickname, arena_id } = req.body;
-        console.log("userinput", nickname, arena_id);
         const valid_arena = await Arena.findOne({ arena_id }).select('arena_id owner_id owner_name');
 
         if (!valid_arena) {
@@ -20,9 +19,9 @@ const joinArena = async (req, res) => {
         const temp_id = nanoid(10);
         res.status(200).json({ nickname, temp_id, ...arena });
 
-    } catch (error) {
-        console.log(error);
-        res.status(401).json({ error })
+    } catch (err) {
+        console.log(err);
+        res.status(401).json({ error: err.message})
     }
 
 }

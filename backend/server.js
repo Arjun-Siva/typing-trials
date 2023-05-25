@@ -1,5 +1,4 @@
 const express = require("express");
-const http = require("http");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const app = express();
@@ -27,10 +26,10 @@ mongoose.connect(process.env.MONGO_URI, {
 //middleware
 app.use(express.json())
 
-app.use((req, res, next) => {
-    console.log('request', req.path, req.method);
-    next();
-})
+// app.use((req, res, next) => {
+//     console.log('request', req.path, req.method);
+//     next();
+// })
 
 app.use("/api/scores", scoreRoutes);
 app.use("/api/user", userRoutes);
@@ -50,6 +49,3 @@ const io = require("socket.io")(server, {
 });
 
 ArenaSockets(io);
-  // app.listen(process.env.PORT || 4000, () => {
-  //   console.log('Listening on port: 4000');
-  // })

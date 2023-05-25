@@ -9,6 +9,7 @@ import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import Profile from "./pages/Profile/Profile";
 import Arena from "./pages/Arena/Arena";
+import About from "./pages/About/About";
 import Footer from "./components/Footer/Footer";
 import CreateArena from "./pages/Arena/CreateArena/CreateArena";
 import JoinArena from "./pages/Arena/JoinArena/JoinArena";
@@ -49,6 +50,10 @@ function App() {
             <Route
               path="/arena/join"
               element={!arena ? <JoinArena /> : <Navigate to="/arena" />}
+            />
+            <Route
+              path="/about"
+              element={<About />}
             />
           </Routes>
         </div>

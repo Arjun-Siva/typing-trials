@@ -1,6 +1,6 @@
 const ArenaSockets = (io) => {
     io.on("connection", (socket) => {
-        console.log("Sockets are in action " + socket.id);
+        //console.log("Sockets are in action " + socket.id);
 
         socket.on("setup", (userData) => {
             // userData has arena_id, nickname
@@ -34,13 +34,13 @@ const ArenaSockets = (io) => {
         })
 
         socket.on("game restart", (arena_id) => {
-            console.log("game restart received", arena_id);
+            //console.log("game restart received", arena_id);
             socket.to(arena_id).emit("game stop");
         })
 
-        socket.on("disconnect", () => {
-            console.log(socket.id, " disconnected")
-        })
+        // socket.on("disconnect", () => {
+        //     console.log(socket.id, " disconnected")
+        // })
     })
 }
 

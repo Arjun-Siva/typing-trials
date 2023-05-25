@@ -21,14 +21,14 @@ function ScrollDownButton() {
   };
 
   const scrollDownBtnStyle = {
-    position: 'fixed',
-    bottom: '20px',
-    left: '300px',
+    // position: 'fixed',
+    top: '110%',
+    right: '28%',
     backgroundColor: '#ffffff',
     border: 'none',
     borderRadius: '20%',
-    width: '200px',
-    height: '100px',
+    width: '100px',
+    height: '50px',
     fontSize: '50px',
     color: '#000012',
     animation: `${isVibrating ? 'vibration 0.3s infinite alternate' : ''}`,
