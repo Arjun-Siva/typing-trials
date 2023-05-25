@@ -1,0 +1,51 @@
+.arenaContainer img {
+    padding-top: 2%;
+    padding-right: 2%;
+    width: 40%;
+    height:90%;
+    float: right;
+    border-radius: 15%;
+}
+
+.arenaContainer{
+    height: 30em;
+    max-width: 100%;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}
+
+.arenaText {
+    padding-top: 10%;
+}
+
+.arenaText p{
+    text-align: center;
+    font-size: 20px;
+}
+
+.arenaTitle a{
+    text-decoration: none;
+    color:#4fa7b3;
+    margin-top: 2em;
+}
+
+.arenaTitle a:hover{
+    color:deeppink;
+}
+
+.gameContainer {
+    width: 80%;
+    margin-left: 5%;
+}
+
+.arenaDeets{
+    font-weight: bold;
+}
+
+.messages{
+    color: green;
+}
+
+.playerTable{
+    margin-left: 25%;
+}

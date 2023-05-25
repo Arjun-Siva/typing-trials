@@ -16,8 +16,8 @@ import { Link } from 'react-router-dom';
 import { useLogout } from '../../hooks/useLogout';
 import { useAuthContext } from '../../hooks/useAuthContext';
 
-const pages = ['Login', 'Sign up'];
-const links = ['/login', '/signup'];
+const pages = ['Arena', 'About', 'Login', 'Sign up'];
+const links = ['/arena', '/about', '/login', '/signup'];
 
 function Navbar() {
 
@@ -65,7 +65,6 @@ function Navbar() {
             Typing Trials
           </Typography>
 
-          {!user && (<>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -95,10 +94,10 @@ function Navbar() {
                 display: { xs: 'flex', md: 'none' },
               }}
             >
-              {pages.map((page, i) => (
+              {pages.filter(page => !(user && (page === 'Login' || page === 'Sign up'))).map((page, i) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Link to={links[i]} style={{ textDecoration: 'none' }}>
-                    <Typography textAlign="center">{page}</Typography>
+                  <Link key={page} to={links[i]} style={{ textDecoration: 'none' }}>
+                    <Typography key={page} textAlign="center">{page}</Typography>
                   </Link>
                 </MenuItem>
               ))}
@@ -107,8 +106,8 @@ function Navbar() {
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-              {pages.map((page, i) => (
-                <Link to={links[i]} style={{ textDecoration: 'none' }}>
+              {pages.filter(page => !(user && (page === 'Login' || page === 'Sign up'))).map((page, i) => (
+                <Link key={page} to={links[i]} style={{ textDecoration: 'none' }}>
                   <Button
                     key={page}
                     onClick={handleCloseNavMenu}
@@ -120,13 +119,11 @@ function Navbar() {
               ))}
             </Box>
           </Box>
-          </>
-          )}
 
-          {user && (<Box display="flex-end" flexDirection="column" sx={{ flexGrow: 0}}>
+          {user && (<Box display="flex-end" flexDirection="column" sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={user.email} src="/static/images/avatar/1.jpg" />
+                <Avatar alt={user.email} />
               </IconButton>
             </Tooltip>
             <Menu

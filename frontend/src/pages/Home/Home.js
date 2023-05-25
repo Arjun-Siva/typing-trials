@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import TrialsEngine from "../../components/TrialsEngine/TrialsEngine";
 import TypeWriterImage from "../../images/typewriter.jpg";
+import { Link } from 'react-router-dom';
 import './Home.css';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
@@ -27,18 +28,29 @@ const Home = () => {
         <div className="home">
             <div className="landing">
                 <div className="title">
-                    <h1>{'Typing Trials'}</h1>
+                    <span className="heading">
+                        <Typography variant="h1">Typing Trials</Typography>
+                    </span>
+                    <div className="playnow">
+                        <a href="#trialsEngine">
+                            <Typography textAlign="center" variant="h3">Play now</Typography>
+                        </a>
+                        {/* </div>
+                    <div className="compete"> */}
+                        <Link to="/arena" style={{ textDecoration: 'none' }}>
+                            <Typography textAlign="center" variant="h3">Compete with friends</Typography>
+                        </Link>
+                    </div>
                 </div>
-                <ScrollDownButton/>
+                <ScrollDownButton />
                 <img src={TypeWriterImage} alt="typewriter" />
             </div>
-            <div className="engineContainer">
+            <div className="engineContainer" id="trialsEngine">
                 {prevResults && (
                     <Typography
                         variant="h6"
                         noWrap
                         component="a"
-                        href="/"
                         className="typography"
                         sx={{
                             mr: 2,
@@ -59,6 +71,7 @@ const Home = () => {
                         fullText={fullText}
                         reloadText={newText}
                         setPrevResults={setPrevResults}
+                        multimode={false}
                     />}
             </div>
         </div>

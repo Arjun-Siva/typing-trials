@@ -10,6 +10,7 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
+import Tooltip from '@mui/material/Tooltip';
 // import Confetti from 'react-confetti';
 // import CustomSnackbar from "../../Snackbar/CustomSnackbar";
 
@@ -56,9 +57,6 @@ export default function ResultModal(props) {
   const speed = props.speed;
 
   const [open, setOpen] = useState(true);
-  // const [openSnackBar, setOpenSnackBar] = useState(false);
-  // const [snackBarMessage, setSnackbarMessage] = useState('');
-  // const [messageType, setMessageType] = useState('success');
 
   const { user } = useAuthContext();
 
@@ -77,18 +75,10 @@ export default function ResultModal(props) {
         'Authorization': `Bearer ${user.token}`
       }
     })
-    
+
     if (!response.ok) {
-      // setSnackbarMessage('Unable to save score');
-      // setMessageType('error');
-      // setOpenSnackBar(true);
-      alert('Unable to save')
+      alert('Unable to save');
     }
-    // if (response.ok) {
-    //   setSnackbarMessage('Score saved successfully');
-    //   setMessageType('success');
-    //   setOpenSnackBar(true);
-    // }
     setOpen(false);
   }
 
@@ -113,9 +103,11 @@ export default function ResultModal(props) {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleSave} disabled={!user}>
-            Save results
-          </Button>
+          <Tooltip title="Save progress when signed in">
+            <Button autoFocus onClick={handleSave} disabled={!user}>
+              Save results
+            </Button>
+          </Tooltip>
         </DialogActions>
       </BootstrapDialog>
     </div>

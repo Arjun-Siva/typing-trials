@@ -19,8 +19,17 @@ const createEmptyBitmaps = (wordsOfText) => {
 
 let startTime, endTime, showResults, speed, accuracy;
 
+/**
+ * in props get mode: multi: true/false --
+ * if mode is multi, emit current progress, on each time updated
+ * hide start, restart buttons in multi --
+ * render only when arena owner starts the game. when starts, fetch text from API
+ * if multi mode, default value for started is true --
+ */
+
 const TrialsEngine = (props) => {
 
+    const multimode = props.multimode;
     const fullText = props.fullText;
     let words = fullText.split(" ").map((word) => word + " ");
     words[words.length - 1] = words[words.length - 1].trim();
@@ -35,29 +44,31 @@ const TrialsEngine = (props) => {
     const [currentProgress, setProgress] = useState(0);
     const [individualContrib, setIndividualContrib] = useState(_.clone(contribs));
 
-    const [started, startGame] = useState(false);
+    const [started, startGame] = useState(multimode);
 
     const startGameHandler = () => {
         startTime = new Date().getTime();
         startGame(true);
     }
 
-    // const stopGameHandler = () => {
-    //     startGame(false);
-    // }
-
     const onCompletionHandler = (resultBitmap) => {
         let updatedBitMaps = _.cloneDeep(correctnessBitmaps);
         updatedBitMaps[currentWordIndex] = resultBitmap; // might be clone. no probs as of now
         setCorrectnessBitmaps(updatedBitMaps);
 
-        setProgress(currentProgress + individualContrib[currentWordIndex]);
+        let newProgress = currentProgress + individualContrib[currentWordIndex];
+
+        setProgress(newProgress);
+
+        if (multimode) { props.progressChangeHandler(newProgress); }
 
         if (currentWordIndex !== allWords.length - 1) {
             setCurrentWordIndex(currentWordIndex + 1);
         }
         else {
             endTime = new Date().getTime();
+
+            setProgress(100); // to round it up
 
             let totalWords = 0, totalChars = 0, correctChars = 0;
             updatedBitMaps.forEach((wordBitmap) => {
@@ -69,14 +80,18 @@ const TrialsEngine = (props) => {
                 totalWords += 1;
             })
 
-            let timeTaken = ((endTime - startTime) / 1000) / 60; // in mimutes
+            let timeTaken = ((endTime - startTime) / 1000) / 60; // in minutes
             speed = Math.round(totalWords / timeTaken, 0);
             accuracy = Math.round((correctChars / totalChars) * 100, 2);
             showResults = true;
 
-            props.setPrevResults(
-                {speed, accuracy}
-            )            
+            if (multimode) {
+                props.endGameHandler({ speed, accuracy });
+            }
+
+            if (!multimode) {
+                props.setPrevResults({ speed, accuracy });
+            }
         }
     }
 
@@ -94,7 +109,11 @@ const TrialsEngine = (props) => {
         setWords(_.clone(words));
         setCorrectnessBitmaps(createEmptyBitmaps(words));
         setIndividualContrib(_.clone(contribs));
-    }, [fullText]);
+
+        if (multimode) {
+            startTime = new Date().getTime();
+        }
+    }, [fullText, multimode]);
 
     const restartHandler = () => {
         props.reloadText();
@@ -102,20 +121,17 @@ const TrialsEngine = (props) => {
 
     return (
         <div className="EngineContainer">
-            <Stack direction="row" spacing={5} className="Stack">
+            {!multimode && <Stack direction="row" spacing={5} className="Stack">
                 <Button variant="outlined" color="success" onClick={startGameHandler} disabled={started}>
                     Start
                 </Button>
-                {/* <Button variant="outlined" color="error" disabled={showResults} onClick={stopGameHandler}>
-                    Stop
-                </Button> */}
                 <Button variant="outlined" color="secondary" onClick={restartHandler}>
                     Restart
                 </Button>
-            </Stack>
+            </Stack>}
             <Paper elevation={16} className="TrialsEngine" square>
                 <TextArea fullText={fullText} currentBitmaps={correctnessBitmaps} blur={!started} />
-                <ProgressBar progress={currentProgress} />
+                <ProgressBar progress={currentProgress}/>
                 {(currentProgress < 100 && started) && <InputText className="InputText" currentWord={allWords[currentWordIndex]} onCompletion={onCompletionHandler} />}
             </Paper>
             {showResults && <ResultModal accuracy={accuracy} speed={speed} />}
