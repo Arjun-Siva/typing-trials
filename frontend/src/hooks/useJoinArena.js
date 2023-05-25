@@ -10,7 +10,7 @@ export const useJoinArena = () => {
         setIsLoading(true);
         setError(null);
 
-        const response = await fetch('/api/arena/join', {
+        const response = await fetch(process.env.REACT_APP_ARENA_JOIN_API, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({nickname, arena_id})
@@ -24,10 +24,8 @@ export const useJoinArena = () => {
         }
         else{
             setIsLoading(false);
-            // save the user to local storage
-            // localStorage.setItem('user', JSON.stringify(json))
 
-            //update auth context
+            //update arena context
             dispatch({type: 'JOIN', payload: json})
             setIsLoading(false);
         }

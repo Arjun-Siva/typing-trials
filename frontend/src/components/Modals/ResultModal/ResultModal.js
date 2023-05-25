@@ -67,7 +67,7 @@ export default function ResultModal(props) {
   const handleSave = async () => {
     const score = { speed, accuracy };
 
-    const response = await fetch('/api/scores', {
+    const response = await fetch(process.env.REACT_APP_SCORES_API, {
       method: 'POST',
       body: JSON.stringify(score),
       headers: {
