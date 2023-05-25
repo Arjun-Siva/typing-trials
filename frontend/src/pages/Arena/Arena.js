@@ -11,7 +11,7 @@ import PlayerTable from "../../components/PlayerTable/PlayerTable";
 import "./Arena.css";
 import io from 'socket.io-client';
 
-const socket = io.connect(process.env.REACT_SOCKET_API);
+const socket = io.connect(process.env.REACT_APP_SOCKET_API);
 
 const Arena = () => {
   const { arena } = useArenaContext();
