@@ -50,7 +50,7 @@ const Arena = () => {
   });
 
   const startGameHandler = async () => {
-    const response = await fetch('/api/paragraph');
+    const response = await fetch(process.env.REACT_APP_PARAGRAPH_API);
     const fullText = await response.text();
     socket.emit("start game", {
       "arena_id": arena.arena_id,
