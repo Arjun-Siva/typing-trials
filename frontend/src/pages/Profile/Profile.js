@@ -24,7 +24,7 @@ const Profile = () => {
 
     useEffect(() => {
         const fetchScores = async () => {
-            const response = await fetch('/api/scores', {
+            const response = await fetch(process.env.REACT_APP_SCORES_API, {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
                 }

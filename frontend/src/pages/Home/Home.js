@@ -14,7 +14,7 @@ const Home = () => {
 
     const newText = () => {
         setLoadingContent(true);
-        fetch('/api/paragraph')
+        fetch(process.env.REACT_APP_PARAGRAPH_API)
             .then(response => response.text())
             .then(data => {
                 setFullText(data);
@@ -35,8 +35,6 @@ const Home = () => {
                         <a href="#trialsEngine">
                             <Typography textAlign="center" variant="h3">Play now</Typography>
                         </a>
-                        {/* </div>
-                    <div className="compete"> */}
                         <Link to="/arena" style={{ textDecoration: 'none' }}>
                             <Typography textAlign="center" variant="h3">Compete with friends</Typography>
                         </Link>

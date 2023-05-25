@@ -17,12 +17,6 @@ export const ArenaContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(arenaReducer, {
         arena: null
     })
-    // useEffect(() => {
-    //     const arena = JSON.parse(localStorage.getItem('user'))
-    //     if(arena){
-    //         dispatch({type: 'JOIN', payload: user});
-    //     }
-    // }, [])
 
     return (
         <ArenaContext.Provider value={{...state, dispatch}}>

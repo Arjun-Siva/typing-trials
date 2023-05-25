@@ -10,7 +10,7 @@ export const useCreateArena = () => {
         setIsLoading(true);
         setError(null);
 
-        const response = await fetch('/api/arena/create', {
+        const response = await fetch(process.env.REACT_APP_ARENA_CREATE_API, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({nickname})
@@ -23,8 +23,6 @@ export const useCreateArena = () => {
         }
         else{
             setIsLoading(false);
-            // save the user to local storage
-            // localStorage.setItem('user', JSON.stringify(json))
 
             //update context
             dispatch({type: 'JOIN', payload: json})
