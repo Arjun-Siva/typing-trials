@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { DataGrid } from '@mui/x-data-grid';
-import formatDistanceToNow from "date-fns/formatDistanceToNow"
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import { Typography } from "@mui/material";
 
 const columns = [
     { field: 'speed', headerName: 'Speed (WPM)', width: 130 },
@@ -31,18 +32,19 @@ const Profile = () => {
             })
             const json = await response.json()
             setScores(json);
-            console.log(json);
         }
 
         if (user) {
             fetchScores();
         }
 
-    }, [/*dispatch,*/ user]);
+    }, [user]);
 
     return (
         <div>
-            <h1>History</h1>
+            <Typography variant="h3">Hi, {user.username}</Typography>
+            <br/>
+            <Typography variant="h4">Saved results</Typography>
             <div style={{ height: 400, width: '100%' }}>
                 {scores && 
                 <DataGrid
