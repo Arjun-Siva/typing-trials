@@ -32,11 +32,12 @@ const Home = () => {
                         <Typography variant="h1">Typing Trials</Typography>
                     </span>
                     <div className="playnow">
+                        <p>Test your typing speed and accuracy. Signup to save your results</p>
                         <a href="#trialsEngine">
-                            <Typography textAlign="center" variant="h3">Play now</Typography>
+                            <Typography textAlign="center" variant="h4">Play now</Typography>
                         </a>
                         <Link to="/arena" style={{ textDecoration: 'none' }}>
-                            <Typography textAlign="center" variant="h3">Compete with friends</Typography>
+                            <Typography textAlign="center" variant="h4">Compete with friends</Typography>
                         </Link>
                     </div>
                 </div>

@@ -18,6 +18,9 @@ const About = () => {
             <hr/>
             <Typography variant="h3">Libraries used ?</Typography>
             <p>MongoDB, Express js, React js, Node js, Socket.io, Material UI</p>
+            <hr/>
+            <Typography variant="h3">Source code</Typography>
+            <p>Leave a 🌟 at <a href="https://github.com/Arjun-Siva/typing-trials">Typing Trials repository</a></p>
         </div>
     )
 }
